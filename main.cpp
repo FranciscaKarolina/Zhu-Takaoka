@@ -4,25 +4,26 @@
 #include <string.h>
 
 #define ASIZE 256 // Tamanho do alfabeto
-#define XSIZE 100 // Tamanho m�ximo do padr�o
+#define XSIZE 100 // Tamanho máximo do padrão
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 void SAIDA(int j) {
-    printf("Ocorr�ncia na posi��o %d\n", j);
+    printf("Ocorrência na posição %d\n", j);
 }
 
-// Pr�-processamento da tabela ztBc
+// Pré-processamento da tabela ztBc
+//A tabela ztBc armazena o tamanho máximo do salto que pode ser feito a partir de um determinado caractere do alfabeto para um caractere do padrão.
 void preZtBc(char *x, int m, int ztBc[ASIZE][ASIZE]) {
     int i, j;
-    for (i = 0; i < ASIZE; ++i)
+    for (i = 0; i < ASIZE; ++i)//Todas as posições da tabela são carregadas com o valor do tamanho da palavra.
         for (j = 0; j < ASIZE; ++j)
             ztBc[i][j] = m;
-    for (i = 0; i < ASIZE; ++i)
+    for (i = 0; i < ASIZE; ++i)//Faz uma varredura na palavra, alternando o valor correspondente a cada caracter na tabela alfabeto.
         ztBc[i][x[0]] = m - 1;
-    for (i = 1; i < m; ++i)
+    for (i = 1; i < m; ++i)//Os caracteres alterados recebem o valor m - 1 - i.
         ztBc[x[i - 1]][x[i]] = m - 1 - i;
 }
-// Calcula os sufixos
+// Calcula os sufixos do padrão
 void calculateSuffixes(char *x, int m, int *suff) {
     int f = 0, g, i;
 
@@ -41,7 +42,7 @@ void calculateSuffixes(char *x, int m, int *suff) {
         }
     }
 }
-//Pr�-processamento da tabela ztBc
+//Pré-processamento da tabela BmGs
 void preBmGs(char *x, int m, int bmGs[XSIZE]) {
     int i, j, suff[XSIZE];
 
@@ -63,10 +64,11 @@ void preBmGs(char *x, int m, int bmGs[XSIZE]) {
         bmGs[m - 1 - suff[i]] = m - 1 - i;
 }
 // Algoritmo de busca ZT
+//A função utiliza as tabelas ztBc e bmGs para determinar o tamanho do salto a ser feito a cada iteração.
 void ZT(char *x, int m, char *y, int n) {
     int i, j, ztBc[ASIZE][ASIZE], bmGs[XSIZE];
 
-    /* Pr�-processando */
+    /* Pré-processando */
     preZtBc(x, m, ztBc);
     preBmGs(x, m, bmGs);
 
